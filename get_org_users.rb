@@ -18,6 +18,8 @@ end
 github_org = ENV[github_org_env_var]
 
 client = Octokit::Client.new(:access_token => "#{ENV[github_token_env_var]}")
+# so we don't have to manually handle pagination in the responses from the api
+client.auto_paginate = true
 
 def print_user(login, name, email, state, role, inviter, membership)
     info = { username: login,
@@ -27,11 +29,11 @@ def print_user(login, name, email, state, role, inviter, membership)
                   role: role,
                   inviter: inviter,
                   membership: membership }
-    puts "#{login}, #{name}, #{email}, #{state}, #{role}, #{inviter}, #{membership}, "
+    puts "#{login}, #{name}, #{state}, #{role}, #{inviter}, #{membership}, "
     info
 end
 
-puts "login, name, email, state, role, inviter, membership, "
+puts "login, name, state, role, inviter, membership, "
 
 members = client.organization_members(github_org).map { |member|
     membership = client.organization_membership(github_org, { user: member.login })
