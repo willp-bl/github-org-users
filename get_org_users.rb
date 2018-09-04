@@ -54,6 +54,6 @@ collaborators = client.outside_collaborators(github_org).map { |member|
 
 all_users = members + invitations + collaborators
 
-puts "WARNING: merged hash has missed some users" if members.length+invitations.length+collaborators.length != all_users.length
+puts "WARNING: merged hash has missed some users" unless members.length+invitations.length+collaborators.length == all_users.length
 
 # puts "#{all_users.to_json}"
